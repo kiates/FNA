@@ -898,7 +898,52 @@ namespace Microsoft.Xna.Framework
 				// Mouse Input
 				else if (evt.type == SDL.SDL_EventType.SDL_MOUSEBUTTONDOWN)
 				{
+					switch (evt.button.button - 1)
+					{
+						case 0:
+							Mouse.INTERNAL_MouseButtonLeft = true;
+							break;
+						case 1:
+							Mouse.INTERNAL_MouseButtonMiddle = true;
+							break;
+						case 2:
+							Mouse.INTERNAL_MouseButtonRight = true;
+							break;
+						case 3:
+							Mouse.INTERNAL_MouseButtonX1 = true;
+							break;
+						case 4:
+							Mouse.INTERNAL_MouseButtonX2 = true;
+							break;
+					}
 					Mouse.INTERNAL_onClicked(evt.button.button - 1);
+				}
+				else if (evt.type == SDL.SDL_EventType.SDL_MOUSEBUTTONUP)
+				{
+					switch (evt.button.button - 1)
+					{
+						case 0:
+							Mouse.INTERNAL_MouseButtonLeft = false;
+							break;
+						case 1:
+							Mouse.INTERNAL_MouseButtonMiddle = false;
+							break;
+						case 2:
+							Mouse.INTERNAL_MouseButtonRight = false;
+							break;
+						case 3:
+							Mouse.INTERNAL_MouseButtonX1 = false;
+							break;
+						case 4:
+							Mouse.INTERNAL_MouseButtonX2 = false;
+							break;
+					}
+					Mouse.INTERNAL_onReleased(evt.button.button - 1);
+				}
+				else if (evt.type == SDL.SDL_EventType.SDL_MOUSEMOTION)
+				{
+					Mouse.INTERNAL_MousePositionX = evt.motion.x;
+					Mouse.INTERNAL_MousePositionY = evt.motion.y;
 				}
 				else if (evt.type == SDL.SDL_EventType.SDL_MOUSEWHEEL)
 				{

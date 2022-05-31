@@ -48,12 +48,20 @@ namespace Microsoft.Xna.Framework.Input
 		internal static int INTERNAL_BackBufferHeight = GraphicsDeviceManager.DefaultBackBufferHeight;
 
 		internal static int INTERNAL_MouseWheel = 0;
+		internal static int INTERNAL_MousePositionX = 0;
+		internal static int INTERNAL_MousePositionY = 0;
+		internal static bool INTERNAL_MouseButtonLeft = false;
+		internal static bool INTERNAL_MouseButtonMiddle = false;
+		internal static bool INTERNAL_MouseButtonRight = false;
+		internal static bool INTERNAL_MouseButtonX1 = false;
+		internal static bool INTERNAL_MouseButtonX2 = false;
 
 		#endregion
 
 		#region Public Events
 
 		public static Action<int> ClickedEXT;
+		public static Action<int> ReleasedEXT;
 
 		#endregion
 
@@ -66,19 +74,13 @@ namespace Microsoft.Xna.Framework.Input
 		/// <returns>Current state of the mouse.</returns>
 		public static MouseState GetState()
 		{
-			int x, y;
-			ButtonState left, middle, right, x1, x2;
-
-			FNAPlatform.GetMouseState(
-				WindowHandle,
-				out x,
-				out y,
-				out left,
-				out middle,
-				out right,
-				out x1,
-				out x2
-			);
+			int x = INTERNAL_MousePositionX;
+			int y = INTERNAL_MousePositionY;
+			ButtonState left = INTERNAL_MouseButtonLeft ? ButtonState.Pressed : ButtonState.Released;
+			ButtonState middle = INTERNAL_MouseButtonMiddle ? ButtonState.Pressed : ButtonState.Released;
+			ButtonState right = INTERNAL_MouseButtonRight ? ButtonState.Pressed : ButtonState.Released;
+			ButtonState x1 = INTERNAL_MouseButtonX1 ? ButtonState.Pressed : ButtonState.Released;
+			ButtonState x2 = INTERNAL_MouseButtonX2 ? ButtonState.Pressed : ButtonState.Released;
 
 			// Scale the mouse coordinates for the faux-backbuffer
 			x = (int) ((double) x * INTERNAL_BackBufferWidth / INTERNAL_WindowWidth);
@@ -125,6 +127,14 @@ namespace Microsoft.Xna.Framework.Input
 			if (ClickedEXT != null)
 			{
 				ClickedEXT(button);
+			}
+		}
+
+		internal static void INTERNAL_onReleased(int button)
+		{
+			if (ReleasedEXT != null)
+			{
+				ReleasedEXT(button);
 			}
 		}
 
